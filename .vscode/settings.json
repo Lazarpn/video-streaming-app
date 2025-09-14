@@ -1,0 +1,65 @@
+{
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  "stylelint.validate": [
+    "css",
+    "scss",
+    "less",
+    "sass"
+  ],
+  "files.insertFinalNewline": true,
+  "[typescript]": {
+    "editor.formatOnSave": true,
+  },
+  "[scss]": {
+    "editor.formatOnSave": false,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.stylelint": "explicit"
+    },
+    "editor.defaultFormatter": "stylelint.vscode-stylelint",
+  },
+  "[css]": {
+    "editor.formatOnSave": false,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.stylelint": "explicit"
+    },
+  },
+  "scss.lint.zeroUnits": "ignore",
+  "html.format.indentInnerHtml": true,
+  "html.format.wrapLineLength": 0,
+  "html.format.wrapAttributes": "preserve",
+  "javascript.preferences.quoteStyle": "single",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.preferences.quoteStyle": "single",
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "importSorter.sortConfiguration.customOrderingRules.rules": [
+    {
+      "regex": "^[@]",
+      "orderLevel": 1
+    },
+    {
+      "regex": "^[^.@]",
+      "orderLevel": 2
+    },
+    {
+      "regex": "^[.]",
+      "orderLevel": 3
+    },
+  ],
+  "importSorter.generalConfiguration.sortOnBeforeSave": true,
+  "importSorter.sortConfiguration.removeUnusedDefaultImports": true,
+  "importSorter.sortConfiguration.removeUnusedImports": true,
+  "importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.count": 140,
+  "importSorter.importStringConfiguration.tabSize": 2,
+  "[css][scss]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.stylelint": "explicit"
+    }
+  },
+  "js-beautify-for-vscode.html.templating": [
+    "angular"
+  ],
+  "html.format.indentHandlebars": true
+}

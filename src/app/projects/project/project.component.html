@@ -1,0 +1,33 @@
+<div
+  class="project"
+  (mouseleave)="projectHovered = false"
+  (mouseover)="projectHovered = true">
+  <div class="text" [class.visible-text]="projectHovered">
+    <h3>{{heading}}</h3>
+    <span>{{description}}</span>
+    <div class="tags-wrapper">
+      @for(tag of tags; track tag) {
+        <div class="project-tag">{{tag}}</div>
+      }
+    </div>
+  </div>
+
+  @if (!isImageOnly) {
+    <video [class.video-hover]="projectHovered" autoplay loop [muted]="true" playsinline>
+      <source [src]="videoUrl" type="video/webm">
+      Sorry, your browser doesn't support embedded videos.
+    </video>
+  } @else {
+    <img [class.video-hover]="projectHovered" [src]="videoUrl" [alt]="heading">
+  }
+</div>
+
+<div class="text-tablet">
+  <h3>{{heading}}</h3>
+  <span>{{description}}</span>
+  <div class="tags-wrapper">
+    @for(tag of tags; track tag) {
+      <div class="project-tag">{{tag}}</div>
+    }
+  </div>
+</div>

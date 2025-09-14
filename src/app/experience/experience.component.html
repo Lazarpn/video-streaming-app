@@ -1,0 +1,27 @@
+<div #heading class="title-wrapper">
+  <vs-tag text="h2"></vs-tag>
+  <h2>{{'label.experience' | translate}}</h2>
+  <vs-tag text="h2" [isClosing]="true"></vs-tag>
+</div>
+
+<div class="wrapper">
+  <vs-experience-block
+    [title]="'label.marbleExperience' | translate"
+    [description]="'label.marbleExperienceDescription' | translate">
+  </vs-experience-block>
+
+  <vs-experience-block
+    [title]="'label.idealWeddingExperience' | translate"
+    [description]="'label.idealWeddingExperienceDescription' | translate">
+  </vs-experience-block>
+
+  <vs-experience-block
+    [title]="'label.fonboardExperience' | translate"
+    [description]="'label.fonboardExperienceDescription' | translate">
+  </vs-experience-block>
+
+  <vs-experience-block
+    [title]="'label.fonisExperience' | translate"
+    [description]="'label.fonisExperienceDescription' | translate">
+  </vs-experience-block>
+</div>

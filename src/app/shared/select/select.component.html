@@ -1,0 +1,53 @@
+<mat-form-field [class.no-label]="!label" [class.field-disabled]="disabled" [class.small]="small"
+  [class.mobile]="mobile" [class.prefix-icon]="prefixIcon" [hideRequiredMarker]="true" floatLabel="always">
+
+  @if(label) {
+    <label>{{'label.' + label | translate}}</label>
+  }
+
+  <div>
+    @if (selectModel.invalid && !selectModel.pristine && errors.length === 0 && selectModel.errors?.required) {
+      <mat-error>
+        <vs-icon color="default" iconName="error_circle" [size]="20">
+        </vs-icon>
+        <small>{{ 'forms.validationErrors.required' | translate:{ propertyName: validationPropertyName } }}</small>
+      </mat-error>
+    }
+
+    @for(error of errors; track error) {
+      <mat-error>
+        <vs-icon color="default" iconName="error_circle" [size]="20">
+        </vs-icon>
+        <small>{{ 'errors.' + error.errorCode | translate: error.params }}</small>
+      </mat-error>
+    }
+  </div>
+
+  @if (prefixIcon) {
+    <vs-icon matPrefix color="default" [iconName]="getOptionIcon()" [size]="mobile ? 24 : 20">
+    </vs-icon>
+  }
+
+  <mat-select class="input-text" disableOptionCentering matInput [id]="id" [name]="name" [multiple]="multiple"
+    [placeholder]="'placeholders.' + placeholder | translate" [disabled]="disabled" [required]="required"
+    (focus)="focus.emit($event)" [(ngModel)]="value" (ngModelChange)="updateChanges()"
+    [panelClass]="'iw-select-panel' + (panelClass ? (' ' + panelClass) : '')" [class.small]="small"
+    [class.mobile]="mobile" [class.prefix-icon]="prefixIcon" (selectionChange)="selectionChange.emit($event)"
+    #selectModel="ngModel">
+    @for(option of options; track option) {
+      <mat-option [value]="getOptionValue(option)" [disabled]="getDisabled(option)">
+        <div class="option-wrapper">
+          @if (option.iconName) {
+            <vs-icon matPrefix color="default" [iconName]="option.iconName" [size]="mobile ? 24 : 20">
+            </vs-icon>
+          }
+          <div>{{getLabel(option)}}</div>
+        </div>
+      </mat-option>
+    }
+  </mat-select>
+
+  @if(additionalInfo) {
+    <small class="additional-info">{{ additionalInfo }}</small>
+  }
+</mat-form-field>

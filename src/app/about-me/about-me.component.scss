@@ -1,0 +1,85 @@
+@use "../../scss/variables" as variables;
+@import "animate.css";
+
+:host {
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+
+  @media #{variables.$laptop} {
+    gap: 32px;
+  }
+
+  @media #{variables.$tablet} {
+    flex-direction: column;
+  }
+}
+
+h2 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.about-info {
+  display: flex;
+  justify-content: space-between;
+
+  p {
+    width: 1000px;
+    font-size: 20px;
+    text-align: justify;
+    word-break: break-word;
+
+    @media #{variables.$laptop} {
+      width: 100%;
+    }
+  }
+}
+
+.image-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+
+  @media #{variables.$xs-desktop} {
+    justify-content: flex-end;
+  }
+}
+
+img {
+  width: 430px;
+  height: 430px;
+  object-fit: cover;
+  object-position: 50% 30%;
+  border-radius: 50%;
+
+  @media #{variables.$l-desktop} {
+    margin-top: 40px;
+  }
+
+  @media #{variables.$xs-desktop} {
+    width: 400px;
+    height: 400px;
+  }
+
+  @media #{variables.$m-phone} {
+    width: 90%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+}
+
+.mobile-only {
+  display: none;
+
+  @media #{variables.$m-phone} {
+    display: block;
+  }
+}
+
+.desktop-only {
+  @media #{variables.$m-phone} {
+    display: none;
+  }
+}

@@ -1,0 +1,64 @@
+@use "../../../scss/variables" as variables;
+
+:host {
+  z-index: 2;
+  display: flex;
+  height: auto;
+  gap: 16px;
+
+  @media #{variables.$xs-desktop} {
+    height: auto;
+  }
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-left: 30px;
+
+  h3 {
+    margin-top: 10px;
+    line-height: 1.1;
+  }
+
+  p {
+    width: 90%;
+
+    @media #{variables.$s-desktop} {
+      width: 100%;
+    }
+  }
+}
+
+.icon {
+  position: relative;
+
+  svg {
+    position: absolute;
+    width: 30px;
+    height: 100%;
+
+    @media #{variables.$xs-desktop} {
+      height: 100%;
+    }
+  }
+}
+
+.visibility-hidden {
+  visibility: hidden;
+}
+
+.mobile-only {
+  display: none;
+
+  @media #{variables.$m-phone} {
+    display: block;
+  }
+}
+
+.desktop-only {
+  @media #{variables.$m-phone} {
+    display: none;
+  }
+}

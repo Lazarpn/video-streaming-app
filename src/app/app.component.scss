@@ -1,0 +1,46 @@
+@use "../scss/mixins" as mixins;
+
+@use "../scss/variables" as variables;
+
+:host {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100dvh;
+  overflow-x: hidden;
+  padding: 0 100px;
+  background-color: var(--dark-blue);
+
+  @include mixins.scrollbar;
+
+  @media #{variables.$s-desktop} {
+    padding: 0 80px;
+  }
+
+  @media #{variables.$tablet} {
+    padding: 0 60px;
+  }
+
+  @media #{variables.$s-tablet} {
+    padding: 0 40px;
+  }
+
+  @media #{variables.$phone} {
+    vs-header {
+      display: none;
+    }
+  }
+}
+
+.loading-overlay {
+  position: fixed;
+  left: 0;
+  z-index: 4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--dark-blue);
+}

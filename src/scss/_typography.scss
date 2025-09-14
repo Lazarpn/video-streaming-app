@@ -1,0 +1,165 @@
+@use "variables" as variables;
+
+body {
+  font-family: "Montserrat", serif;
+  font-size: 18px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--white);
+}
+
+h1 {
+  font-size: 120px;
+  font-weight: 700;
+  line-height: 150px;
+
+  @media #{variables.$xl-desktop} {
+    font-size: 100px;
+  }
+
+  @media #{variables.$s-desktop} {
+    font-size: 90px;
+  }
+
+  @media #{variables.$xs-desktop} {
+    font-size: 80px;
+  }
+
+  @media #{variables.$tablet} {
+    font-size: 64px;
+    line-height: 100px;
+  }
+
+  @media #{variables.$s-tablet} {
+    font-size: 55px;
+    line-height: 90px;
+  }
+
+  @media #{variables.$phone} {
+    // font-size: 40px;
+    // line-height: 1.3;
+  }
+
+  span {
+    font-size: 120px;
+
+    @media #{variables.$xl-desktop} {
+      font-size: 100px;
+    }
+
+    @media #{variables.$s-desktop} {
+      font-size: 90px;
+    }
+
+    @media #{variables.$xs-desktop} {
+      font-size: 80px;
+    }
+
+    @media #{variables.$tablet} {
+      font-size: 64px;
+      line-height: 100px;
+    }
+
+    @media #{variables.$s-tablet} {
+      font-size: 55px;
+      line-height: 90px;
+    }
+
+    @media #{variables.$phone} {
+      // font-size: 40px;
+    }
+  }
+}
+
+h2 {
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 50px;
+
+  @media #{variables.$xs-desktop} {
+    font-size: 44px;
+    line-height: 46px;
+  }
+
+  @media #{variables.$tablet} {
+    font-size: 40px;
+    line-height: 42px;
+  }
+
+  @media #{variables.$phone} {
+    font-size: 38px;
+    line-height: 38px;
+  }
+
+  span {
+    font-size: 48px;
+    font-weight: 900;
+
+    @media #{variables.$xs-desktop} {
+      font-size: 44px;
+    }
+
+    @media #{variables.$tablet} {
+      font-size: 40px;
+    }
+
+    @media #{variables.$phone} {
+      font-size: 38px;
+    }
+  }
+}
+
+h3 {
+  font-size: 32px;
+  line-height: 20px;
+
+  span {
+    font-size: 32px;
+    font-weight: 700;
+  }
+}
+
+li {
+  outline: none;
+  list-style: none;
+}
+
+p {
+  color: var(--white);
+}
+
+a {
+  color: var(--white);
+  text-decoration: none;
+  cursor: pointer;
+
+  &:active,
+  &:focus,
+  &:hover {
+    color: var(--alt);
+  }
+
+  &.white {
+    color: var(--alt);
+
+    &:active,
+    &:focus,
+    &:hover {
+      color: var(--alt);
+    }
+  }
+
+  &:visited {
+    text-decoration: none;
+  }
+}
+
+h4 {
+  font-size: 24px;
+}

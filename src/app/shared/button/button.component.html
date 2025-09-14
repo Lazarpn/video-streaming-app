@@ -1,0 +1,9 @@
+<button [bgLadda]="isLoading" [disabled]="disabled" (click)="buttonClick.emit($event)">
+
+  @if (iconName) {
+    <vs-icon [size]="iconSize" [color]="iconColor" [iconName]="iconName" [iconVariant]="iconVariant">
+    </vs-icon>
+  }
+
+  <ng-content></ng-content>
+</button>

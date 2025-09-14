@@ -1,0 +1,164 @@
+:host {
+  display: inline-block;
+}
+
+i {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 1.5s;
+
+  &[class^="icon-"]::before,
+  &[class*=" icon-"]::before {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  &[role="button"]:hover {
+    cursor: pointer;
+  }
+
+  &.contrast {
+    color: var(--contrast);
+
+    &[role="button"]:hover {
+      opacity: 0.8;
+    }
+  }
+
+  &.alt {
+    color: var(--alt);
+  }
+
+  &.accent {
+    color: var(--accent);
+  }
+
+  &.green {
+    color: #00ffea;
+  }
+
+  &.white {
+    color: var(--white);
+  }
+
+  &.gray-text {
+    color: var(--gray-text);
+  }
+
+  &.accent-blue-20 {
+    color: var(--accent-blue-20);
+  }
+
+  &.accent-blue-40 {
+    color: var(--accent-blue-40);
+  }
+
+  &.accent-blue-60 {
+    color: var(--accent-blue-60);
+  }
+
+  &.blue-black {
+    color: var(--blue-black);
+  }
+
+  &.accent-blurple {
+    color: var(--accent-blurple);
+
+    &:hover {
+      color: var(--accent-blurple-40);
+    }
+  }
+
+  &.accent-blurple-20 {
+    color: var(--accent-blurple-20);
+  }
+
+  &.accent-blurple-40 {
+    color: var(--accent-blurple-40);
+  }
+
+  &.negative {
+    color: var(--negative);
+  }
+
+  &.negative-20 {
+    color: var(--negative-20);
+
+    &[role="button"]:hover {
+      color: var(--negative);
+    }
+  }
+
+  &.negative-60 {
+    color: var(--negative-60);
+
+    &[role="button"]:hover {
+      color: var(--negative-40);
+    }
+  }
+
+  &.positive {
+    color: var(--positive);
+  }
+
+  &.alt-80 {
+    color: var(--alt-80);
+  }
+
+  &.default {
+    color: var(--default);
+
+    &[role="button"]:hover {
+      color: var(--default-20);
+    }
+  }
+
+  &.default-20 {
+    color: var(--default-20);
+  }
+
+  &.default-40 {
+    color: var(--default-40);
+  }
+
+  &.default-60 {
+    color: var(--default-60);
+
+    &[role="button"]:hover {
+      color: var(--default);
+    }
+  }
+
+  &.default-80 {
+    color: var(--default-80);
+  }
+
+  &.base-900 {
+    color: var(--base-900);
+  }
+
+  &.container-2 {
+    color: var(--container-2);
+
+    &:hover {
+      color: var(--contrast);
+    }
+  }
+
+  &.grayscale-g3 {
+    color: var(--grayscale-g3);
+  }
+
+  &.grayscale-g4 {
+    color: var(--grayscale-g4);
+  }
+
+  &.widget-active {
+    color: var(--widget-active);
+  }
+
+  &.light-widget-active {
+    color: var(--light-widget-active);
+  }
+}

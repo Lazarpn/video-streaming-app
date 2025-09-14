@@ -1,0 +1,11 @@
+:host {
+  display: block;
+
+  .alt {
+    --mdc-circular-progress-active-indicator-color: var(--alt);
+  }
+
+  .accent {
+    --mdc-circular-progress-active-indicator-color: var(--accent);
+  }
+}

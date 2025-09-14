@@ -1,0 +1,11 @@
+<vs-header></vs-header>
+<main>
+  <router-outlet></router-outlet>
+</main>
+<vs-footer></vs-footer>
+
+@if(showLoadingSpinner) {
+  <div class="loading-overlay">
+    <vs-spinner [strokeWidth]="5" [diameter]="80"></vs-spinner>
+  </div>
+}

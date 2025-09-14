@@ -1,0 +1,20 @@
+<div #aboutMeInfo class="info">
+  <vs-tag text="h2"></vs-tag>
+  <h2>{{'label.aboutMe' | translate}}</h2>
+  <vs-tag text="h2" [isClosing]="true"></vs-tag>
+
+  <div class="about-info">
+    <vs-read-more
+      class="mobile-only"
+      [maxCharacters]="300"
+      [text]="('label.aboutMeDescription' | translate)">
+    </vs-read-more>
+
+    <p class="desktop-only">{{'label.aboutMeDescription' | translate}}</p>
+  </div>
+</div>
+
+<div #aboutMePhoto class="image-wrapper">
+  <img src="/assets/images/LazarStojanovic.jpeg" alt="Me">
+  <vs-tag text="img src='/assets/images/me.png'"></vs-tag>
+</div>

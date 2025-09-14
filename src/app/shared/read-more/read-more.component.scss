@@ -1,0 +1,31 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 5px;
+}
+
+p {
+  margin: 0;
+  word-break: break-word;
+  text-align: justify;
+}
+
+button {
+  display: flex;
+  justify-content: space-between;
+  width: max-content;
+  padding: 0;
+  margin-top: 12px;
+  border: none;
+  border-bottom: 1px solid var(--alt);
+  outline: none;
+  background-color: transparent;
+  gap: 5px;
+}
+
+span {
+  font-weight: 600;
+  color: var(--accent);
+  user-select: text;
+}

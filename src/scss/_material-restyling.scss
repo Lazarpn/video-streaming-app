@@ -1,0 +1,551 @@
+// @use '@angular/material' as mat;
+
+// @include mat.core();
+
+// $primary-palette: (
+//   100: var(--alt-40),
+//   300: var(--alt-20),
+//   500: var(--alt),
+//   contrast: (
+//     100: var(--black),
+//     300: var(--black),
+//     500: var(--black),
+//   )
+// );
+
+// $accent-palette: (
+//   100: var(--accent-40),
+//   300: var(--accent-20),
+//   500: var(--accent),
+//   contrast: (
+//     100: var(--black),
+//     300: var(--black),
+//     500: var(--black),
+//   )
+// );
+
+// $ideal-wedding-primary: mat.define-palette($primary-palette, 100, 300, 500);
+// $ideal-wedding-accent: mat.define-palette($accent-palette, 100, 300, 500);
+
+// $ideal-wedding-theme: mat.define-light-theme(
+//   (
+//     color: (
+//       primary: $ideal-wedding-primary,
+//       accent: $ideal-wedding-accent,
+//     ),
+//   )
+// );
+
+// @include mat.all-component-themes($ideal-wedding-theme);
+
+// mat-checkbox,
+// mat-form-field,
+// mat-slide-toggle,
+// mat-option,
+// mat-select {
+//     font-family: "Inter", sans-serif !important;
+// }
+
+// mat-tab-body {
+//   .mat-mdc-tab-body-content {
+//     display: flex;
+//     gap: 20px;
+//     flex-wrap: wrap;
+//     padding: 20px;
+//   }
+// }
+
+// mat-form-field {
+//   display: flex;
+
+//   .mat-mdc-form-field-subscrivs-wrapper {
+//     display: none;
+//   }
+// }
+
+// mat-form-field.select::ng-deep {
+//   width: 100%;
+//   border-radius: 8px;
+
+//   .mat-form-field-wrapper {
+//     padding-bottom: 0 !important;
+//   }
+
+//   .mat-form-field-flex {
+//     height: 40px;
+//     border: 1px solid var(--gray);
+//   }
+
+//   .mat-form-field-underline {
+//     display: none;
+//   }
+
+//   .mat-form-field-label-wrapper {
+//     top: -16px;
+//     left: 13px;
+//     padding-top: 11px;
+//     font-size: 14px;
+//   }
+// }
+
+// mat-form-field.mat-form-field-appearance-legacy::ng-deep {
+//   .mat-form-field-infix {
+//     border-top: 10px solid transparent;
+//   }
+// }
+
+// mat-form-field.inline {
+//   width: auto;
+// }
+
+// mat-form-field.select {
+//   background-color: var(--gray);
+
+//   &.selected {
+//     color: var(--white);
+//     background-color: var(--alt);
+
+//     .mat-select-value {
+//       color: var(--white);
+//     }
+
+//     .mat-select-arrow {
+//       color: var(--white) !important;
+//     }
+//   }
+// }
+
+// mat-form-field.inline::ng-deep {
+//   .mat-form-field-flex {
+//     height: 45px;
+//   }
+
+//   .mat-form-field-appearance-legacy .mat-form-field-infix {
+//     padding: 0.4em 0;
+//   }
+// }
+
+// mat-select::ng-deep {
+//   position: relative;
+//   top: -7px;
+//   font-size: 14px;
+
+//   .mat-select-value {
+//     color: var(--message-text-color);
+//   }
+
+//   .mat-select-trigger {
+//     padding: 0 13px;
+//   }
+
+//   .mat-select-arrow {
+//     margin: 0;
+//   }
+// }
+
+// mat-checkbox::ng-deep {
+//   font-size: 14px;
+//   font-weight: normal;
+//   color: var(--message-text-color);
+
+//   .mat-checkbox-inner-container {
+//     width: 24px;
+//     height: 24px;
+//   }
+
+//   .mat-checkbox-frame {
+//     border-color: var(--input-border-color);
+//     border-radius: 4px;
+//   }
+
+//   .mat-checkbox-background {
+//     border-radius: 4px;
+//   }
+
+//   .mat-ripple-element {
+//     background-color: var(--blue) !important;
+//   }
+// }
+
+// mat-checkbox.mat-checkbox-checked.mat-accent::ng-deep .mat-checkbox-background {
+//   background-color: var(--blue);
+// }
+
+// mat-checkbox.info::ng-deep {
+//   .mat-checkbox-checkmark-path {
+//     stroke: var(--info-checkbox-color) !important;
+//   }
+
+//   .mat-ripple-element {
+//     background-color: var(--info-checkbox-background) !important;
+//   }
+// }
+
+// mat-checkbox.info.mat-checkbox-checked.mat-accent::ng-deep .mat-checkbox-background {
+//   background-color: var(--info-checkbox-background);
+// }
+
+// mat-checkbox.info.mat-checkbox-checked.mat-accent::ng-deep .mat-checkbox-frame {
+//   border-color: var(--info-checkbox-border);
+// }
+
+// mat-datepicker-toggle {
+//   position: absolute;
+//   top: 0;
+//   right: 8px;
+//   display: flex;
+//   align-items: center;
+//   height: 100%;
+
+//   &::ng-deep button.mat-icon-button {
+//     height: 24px;
+//   }
+// }
+
+// .mat-tooltip.iv-tooltip {
+//   border: 1px solid var(--tooltip-border);
+//   color: var(--black);
+//   background: var(--alt);
+// }
+
+// mat-form-field.filter {
+//   margin-right: 10px;
+// }
+
+// mat-form-field.filter::ng-deep {
+//   font-size: 14px;
+
+//   .mat-form-field-flex {
+//     align-items: center;
+//     height: 36px;
+//   }
+
+//   .mat-form-field-infix {
+//     display: flex;
+//     align-items: center;
+//     border-top: 0;
+//   }
+
+//   .mat-form-field-label-wrapper {
+//     top: -11px;
+//     left: 13px;
+//     padding-top: 4px;
+//   }
+
+//   mat-select {
+//     top: 0;
+//   }
+// }
+
+// mat-option.mat-option-multiple {
+//   height: 2em;
+//   font-size: 14px;
+// }
+
+// mat-slide-toggle.mat-slide-toggle {
+//   font-size: 14px;
+//   color: var(--gray-text);
+//   letter-spacing: 0.2px;
+// }
+
+// mat-slide-toggle.mat-slide-toggle:not(.mat-disabled)::ng-deep {
+//   .mat-slide-toggle-thumb {
+//     width: 30px;
+//     height: 30px;
+//     background-color: var(--alt);
+//   }
+
+//   .mat-slide-toggle-bar {
+//     width: 48px;
+//     height: 30px;
+//     border-radius: 20px;
+//   }
+
+//   .mat-slide-toggle-thumb-container {
+//     top: 0;
+//     width: 30px;
+//     height: 30px;
+//   }
+// }
+
+// mat-slide-toggle.mat-slide-toggle.mat-checked:not(.mat-disabled)::ng-deep {
+//   .mat-slide-toggle-thumb-container {
+//     transform: translate3d(18px, 0, 0);
+//   }
+
+//   .mat-slide-toggle-thumb {
+//     width: 30px;
+//     height: 30px;
+//     background-color: var(--alt);
+
+//     &::after {
+//       content: '';
+//       position: absolute;
+//       top: calc(50% - 5px);
+//       left: calc(50% - 8px);
+//       width: 18px;
+//       height: 11px;
+//       background-image: url('/assets/images/check-red.svg');
+//       background-position: center center;
+//       background-size: contain;
+//       background-repeat: no-repeat;
+//     }
+//   }
+
+//   .mat-slide-toggle-bar {
+//     background-color: var(--accent);
+//   }
+// }
+
+// mat-pseudo-checkbox {
+//   &.mat-pseudo-checkbox.mat-mdc-option-pseudo-checkbox.mat-pseudo-checkbox-full.mat-pseudo-checkbox-checked {
+//     background-color: var(--alt);
+//   }
+
+//   &.mat-pseudo-checkbox.mat-mdc-option-pseudo-checkbox.mat-pseudo-checkbox-checked.mat-pseudo-checkbox-minimal {
+//     &::after {
+//       color: var(--alt);
+//     }
+//   }
+
+//   &.mat-pseudo-checkbox.mat-mdc-option-pseudo-checkbox.mat-pseudo-checkbox-full {
+//     margin-right: 8px;
+//   }
+// }
+
+// mat-option {
+//   span {
+//     color: var(--black) !important;
+//   }
+// }
+
+// .iw-select-panel {
+//   @include scrollbar;
+
+//   &.vendor-filter, &.admin-vendor-filter {
+//     .option-wrapper {
+//       display: flex;
+//       align-items: center;
+//       gap: 4px;
+
+//       div {
+//         text-wrap: nowrap;
+//       }
+//     }
+//   }
+// }
+
+// .iw-autocomplete-panel  {
+//   &.vendor-simple-search {
+//     padding: 0;
+
+//     mat-option {
+//       padding-left: 0;
+//     }
+
+//     .option-wrapper {
+//       display: flex;
+//       align-items: center;
+//       gap: 8px;
+
+//       div {
+//         display: -webkit-box;
+//         overflow: hidden;
+//         padding: 0;
+//         margin: 0;
+//         -webkit-box-orient: vertical;
+//         -webkit-line-clamp: 2;
+//       }
+
+//       img {
+//         width: 50px;
+//         height: 50px;
+//         object-fit: cover;
+//         object-position: center;
+//       }
+//     }
+//   }
+// }
+// .snackBar .mdc-snackbar__surface {
+//   background-color: var(--alt) !important;
+//   padding-right: 0;
+// }
+
+// .cdk-overlay-pane:has(.vendor-filter) {
+//   @media #{$desktop} {
+//     min-width: 150px !important;
+//     width: auto !important;
+//   }
+// }
+
+// .cdk-overlay-container {
+//   z-index: 1002; // header z-index
+
+//   .spinner-overlay {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//   }
+// }
+
+// .mat-mdc-dialog-container .mat-header {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   height: 76px;
+//   padding: 0 30px;
+//   border-bottom: 2px solid var(--alt-40);
+
+//   @media #{$phone} {
+//     padding: 0 20px;
+//     border: none;
+//   }
+
+//   .mdc-dialog__title {
+//     max-width: calc(100% - 40px);
+//     overflow: hidden;
+//     padding: 0;
+//     margin: 0;
+//     font-family: 'Poppins', sans-serif;
+//     font-weight: 500;
+//     line-height: 1.3;
+//     color: inherit;
+//     text-overflow: ellipsis;
+//     white-space: nowrap;
+//     letter-spacing: normal;
+
+//     @media #{$phone} {
+//       order: 2;
+//       margin-right: auto;
+//     }
+
+//     &::before {
+//       display: none;
+//     }
+//   }
+
+//   h2 {
+//     &.desktop-view {
+//       @media #{$phone} {
+//         display: none;
+//       }
+//     }
+
+//     &.mobile-view {
+//       display: none;
+
+//       @media #{$phone} {
+//         display: block;
+//       }
+//     }
+
+//     @media #{$phone} {
+//       font-size: 24px;
+//     }
+//   }
+
+//   .close-modal,
+//   .modal-back-button {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     min-width: 36px;
+//     width: 36px;
+//     height: 36px;
+//     padding: 0;
+//     border: none;
+//     border-radius: 15px;
+//     outline: none;
+//     background-color: var(--alt-40);
+//     cursor: pointer;
+//     transition: all 0.3s;
+
+//     @media #{$phone} {
+//       order: 3;
+//     }
+
+//     &:hover {
+//       background-color: var(--alt-20);
+//     }
+//   }
+
+//   .modal-back-button {
+//     margin: 0 12px 0 auto;
+
+//     @media #{$phone} {
+//       order: 1;
+//       margin: 0 12px 0 0;
+//       background-color: transparent;
+//     }
+//   }
+// }
+
+// .mdc-dialog mat-dialog-content.mdc-dialog__content {
+//   padding: 20px 30px;
+//   margin: 0;
+//   font: inherit;
+//   color: var(--default);
+//   letter-spacing: normal;
+//   @include scrollbar;
+
+//   @media #{$phone} {
+//     max-height: none;
+//     height: calc(100% - 151px);
+//     padding: 0 20px 20px;
+//     font-size: 17px;
+//     line-height: 28px;
+//   }
+
+//   textarea.mat-input-element {
+//     margin-top: 0;
+//   }
+// }
+
+// mat-dialog-actions.mdc-dialog__actions {
+//   justify-content: flex-end;
+//   align-items: center;
+//   flex-wrap: nowrap;
+//   min-height: auto;
+//   height: 75px;
+//   padding: 0 30px;
+//   margin: 0;
+//   border-top: 2px solid var(--alt-40);
+//   border-radius: 0 0 13px 13px;
+//   box-shadow:
+//     inset 0 -20px 20px -20px rgba(89, 71, 159, 0.25),
+//     inset 20px 0 20px -20px rgba(89, 71, 159, 0.25),
+//     inset -20px 0 20px -20px rgba(89, 71, 159, 0.25);
+//   background-color: var(--alt-80);
+
+//   @media #{$phone} {
+//     justify-content: center;
+//     padding: 0 20px;
+//     border: none;
+//     border-radius: 0;
+//     box-shadow: none;
+//     background-color: transparent;
+//   }
+
+//   iw-button {
+//     min-width: 120px;
+//     margin-right: 12px;
+
+//     @media #{$phone} {
+//       min-width: 84px;
+//       width: 100%;
+//     }
+
+//     &:last-of-type {
+//       margin-right: 0;
+//     }
+
+//     &.full-width {
+//       width: 100%;
+//       margin: 0;
+//     }
+
+//     &[color='tertiary'] {
+//       min-width: auto;
+//     }
+//   }
+// }

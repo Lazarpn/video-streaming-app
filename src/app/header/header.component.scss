@@ -1,0 +1,58 @@
+@use "../../scss/variables" as variables;
+@import "animate.css";
+
+:host {
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 32px 0 0;
+}
+
+span {
+  margin-bottom: -6px;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--white);
+  text-transform: uppercase;
+  animation: fadeIn;
+  animation-duration: 1s;
+}
+
+nav {
+  display: flex;
+  margin-bottom: 0;
+
+  ul {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-bottom: 0;
+    gap: 32px;
+
+    a {
+      position: relative;
+      margin-bottom: 0;
+      color: var(--white);
+      transition: all 0.2s;
+      animation: fadeIn;
+      animation-duration: 1s;
+
+      &::before {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 3px;
+        background-color: var(--white);
+        transition: width 0.3s ease;
+      }
+
+      &:hover::before {
+        width: 100%;
+      }
+    }
+  }
+}
