@@ -1,0 +1,11 @@
+:host {
+  display: flex;
+  margin-top: 500px;
+}
+
+video {
+  max-width: 800px;
+  width: 100%;
+  border-radius: 8px;
+  background-color: var(--black);
+}

@@ -1,0 +1,30 @@
+<mat-form-field
+  color="primary"
+  appearance="outline"
+  [hideRequiredMarker]="true"
+  [class.has-label]="!!label"
+  [class.field-readonly]="!!readonly"
+  [class.field-disabled]="!!disabled">
+
+  <label *ngIf="label">{{'label.' + label | translate}}</label>
+
+  <!-- TODO: handle validation errors -->
+  <input
+    #mainInput
+    matInput
+    [name]="name"
+    [(ngModel)]="value"
+    (ngModelChange)="writeValue($event)"
+    [value]="value"
+    [type]="type"
+    [disabled]="disabled"
+    [readonly]="readonly"
+    [required]="required"
+    [pattern]="pattern"
+    [maxlength]="maxlength"
+    [placeholder]="'placeholders.' + placeholder | translate"
+    (focus)="focus.emit($event)"
+    (blur)="blur.emit($event)"
+    (keyup.enter)="enterHit.emit()"
+    #inputModel="ngModel" />
+</mat-form-field>

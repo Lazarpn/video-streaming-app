@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
-import { AboutMeComponent } from '../about-me/about-me.component';
-import { ContactComponent } from '../contact/contact.component';
-import { ExperienceComponent } from '../experience/experience.component';
-import { ExpertiseComponent } from '../expertise/expertise.component';
-import { HeroComponent } from '../hero/hero.component';
-import { ProjectsComponent } from '../projects/projects.component';
+import { ButtonComponent } from '../shared/button/button.component';
+import { InputComponent } from '../shared/components/input/input.component';
 
 @Component({
   selector: 'vs-home',
-  imports: [HeroComponent, AboutMeComponent, ExpertiseComponent, ProjectsComponent, ExperienceComponent, ContactComponent],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.scss',
+  imports: [ButtonComponent, RouterLink, InputComponent, FormsModule]
 })
 export class HomeComponent {
+  meetingCode: string = '';
 
+  constructor() { }
 }

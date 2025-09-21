@@ -1,0 +1,74 @@
+<mat-form-field
+  [class.no-label]="!label"
+  [class.field-disabled]="disabled"
+  [class.small]="small"
+  [class.mobile]="mobile"
+  [class.prefix-icon]="prefixIcon"
+  [hideRequiredMarker]="true"
+  floatLabel="always">
+
+  <label *ngIf="label">{{'label.' + label | translate}}</label>
+
+  <div>
+    <mat-error *ngIf="selectModel.invalid && !selectModel.pristine && errors.length === 0 && selectModel.errors?.required">
+      <vs-icon
+        color="default"
+        iconName="error_circle"
+        [size]="20">
+      </vs-icon>
+      <small>{{ 'forms.validationErrors.required' | translate:{ propertyName: validationPropertyName } }}</small>
+    </mat-error>
+
+    <mat-error *ngFor="let error of errors">
+      <vs-icon
+        color="default"
+        iconName="error_circle"
+        [size]="20">
+      </vs-icon>
+      <small>{{ 'errors.' + error.errorCode | translate: error.params }}</small>
+    </mat-error>
+  </div>
+
+  <vs-icon
+    *ngIf="prefixIcon"
+    matPrefix
+    color="default"
+    [iconName]="getOptionIcon()"
+    [size]="mobile ? 24 : 20">
+  </vs-icon>
+
+  <mat-select
+    class="input-text"
+    disableOptionCentering
+    matInput
+    [id]="id"
+    [name]="name"
+    [multiple]="multiple"
+    [placeholder]="'placeholders.' + placeholder | translate"
+    [disabled]="disabled"
+    [required]="required"
+    (focus)="focus.emit($event)"
+    [(ngModel)]="value"
+    (ngModelChange)="updateChanges()"
+    [panelClass]="'vs-select-panel' + (panelClass ? (' ' + panelClass) : '')"
+    [class.small]="small"
+    [class.mobile]="mobile"
+    [class.prefix-icon]="prefixIcon"
+    (selectionChange)="selectionChange.emit($event)"
+    #selectModel="ngModel">
+    <mat-option *ngFor="let option of options" [value]="getOptionValue(option)" [disabled]="getDisabled(option)">
+      <div class="option-wrapper">
+        <vs-icon
+          *ngIf="option.iconName"
+          matPrefix
+          color="default"
+          [iconName]="option.iconName"
+          [size]="mobile ? 24 : 20">
+        </vs-icon>
+        <div>{{getLabel(option)}}</div>
+      </div>
+    </mat-option>
+  </mat-select>
+
+  <small class="additional-info" *ngIf="additionalInfo">{{ additionalInfo }}</small>
+</mat-form-field>

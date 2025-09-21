@@ -1,0 +1,31 @@
+<div>
+  <h3>{{'label.loginToYourAccount' | translate}}</h3>
+</div>
+
+<form #form="ngForm">
+
+  <vs-input
+    name="email"
+    placeholder="enterYourEmailAddress"
+    type="email"
+    [(ngModel)]="model.email">
+  </vs-input>
+
+  <vs-input
+    name="password"
+    placeholder="enterYourPassword"
+    type="password"
+    [(ngModel)]="model.password">
+  </vs-input>
+
+  <vs-button (buttonClick)="signIn()">
+    <span>{{'label.signIn' | translate}}</span>
+  </vs-button>
+</form>
+
+<span>
+  {{'label.dontHaveAnAccount' | translate}}
+  <span class="redirect-button" role="button" (click)="signUp()">
+    {{'label.register' | translate}}
+  </span>
+</span>

@@ -1,0 +1,36 @@
+:host {
+  --mat-form-field-container-vertical-padding: 0;
+  --mat-form-field-container-height: 42px;
+  display: flex;
+  width: 100%;
+  margin-bottom: 16px;
+
+  &.no-margin {
+    margin-bottom: 0;
+  }
+
+  label {
+    position: absolute;
+    bottom: 100%;
+    left: -16px;
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: var(--default-40);
+  }
+
+  mat-form-field {
+    width: 100%;
+
+    &.has-label {
+      padding-top: 22px;
+    }
+  }
+
+  ::ng-deep {
+    /* stylelint-disable-next-line selector-class-pattern */
+    .mdc-text-field--no-label .mat-mdc-form-field-infix {
+      display: flex;
+    }
+  }
+}

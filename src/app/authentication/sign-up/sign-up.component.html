@@ -1,0 +1,43 @@
+<div>
+  <h3>{{'label.register' | translate}}</h3>
+</div>
+
+<form #form="ngForm">
+  <vs-input
+    name="email"
+    placeholder="enterYourEmailAddress"
+    [(ngModel)]="model.email">
+  </vs-input>
+
+  <div class="form-group">
+    <vs-input
+      name="firstName"
+      placeholder="firstName"
+      [(ngModel)]="model.firstName">
+    </vs-input>
+
+    <vs-input
+      name="lastName"
+      placeholder="lastName"
+      [(ngModel)]="model.lastName">
+    </vs-input>
+  </div>
+
+  <div class="form-group">
+    <vs-input
+      name="password"
+      placeholder="enterYourPassword"
+      [(ngModel)]="model.password">
+    </vs-input>
+
+    <vs-input
+      name="confirmPassword"
+      placeholder="confirmPassword"
+      [(ngModel)]="confirmedPassword">
+    </vs-input>
+  </div>
+
+  <vs-button (buttonClick)="signUp()">
+    <span>{{'label.register' | translate}}</span>
+  </vs-button>
+</form>

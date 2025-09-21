@@ -1,0 +1,26 @@
+<h3>Choose streaming type</h3>
+
+<vs-select
+  name="streamType"
+  [options]="streamOptions"
+  [(ngModel)]="selectedStreamType">
+</vs-select>
+
+@if (selectedStreamType === StreamTypeEnum.Private) {
+  <vs-input
+    label="password"
+    placeholder="password"
+    name="password"
+    [required]="true"
+    [maxlength]="20"
+    [pattern]="'^[a-zA-Z0-9-]+$'"
+    [(ngModel)]="streamPassword">
+  </vs-input>
+}
+
+<vs-button
+  color="primary"
+  [disabled]="selectedStreamType === StreamTypeEnum.Private && !streamPassword"
+  (click)="createStream()">
+  <span>Create stream</span>
+</vs-button>

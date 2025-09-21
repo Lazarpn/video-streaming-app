@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { AccountService } from '../shared/services/account.service';
+
 @Component({
   selector: 'vs-header',
   imports: [],
@@ -7,11 +9,11 @@ import { Component } from '@angular/core';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-  sidenavOpened = false;
-
-  goToSection(section: string) {
-    this.sidenavOpened = false;
-    const sectionDiv = document.getElementById(section);
-    sectionDiv?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  get userInfo() {
+    return this.accountService.user
+      ? `${this.accountService.user.firstName} ${this.accountService.user.lastName}`
+      : 'NN';
   }
+
+  constructor(private accountService: AccountService) { }
 }

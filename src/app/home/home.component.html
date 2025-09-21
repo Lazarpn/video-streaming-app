@@ -1,6 +1,29 @@
-<vs-hero></vs-hero>
-<vs-about-me id='about'></vs-about-me>
-<vs-expertise></vs-expertise>
-<vs-experience></vs-experience>
-<vs-projects id='projects'></vs-projects>
-<vs-contact id='contact'></vs-contact>
+<h2>Welcome, start the streaming experience!</h2>
+
+<div class="actions-wrapper">
+  <vs-button
+    color="primary"
+    iconName="video"
+    iconColor="yellow"
+    [iconVariant]="24"
+    routerLink="/new-meeting">
+    <span>New meeting</span>
+  </vs-button>
+
+  <vs-input
+    label="meetingCode"
+    placeholder="enterMeetingCode"
+    name="meetingCode"
+    [required]="true"
+    [noMargin]="true"
+    [maxlength]="20"
+    [pattern]="'^[a-zA-Z0-9-]+$'"
+    [(ngModel)]="meetingCode">
+  </vs-input>
+
+  <vs-button
+    color="primary"
+    [disabled]="!meetingCode">
+    <span>Join</span>
+  </vs-button>
+</div>

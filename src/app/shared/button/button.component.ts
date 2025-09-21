@@ -5,18 +5,17 @@ import { LaddaModule } from '../ladda/ladda.module';
 
 @Component({
   selector: 'vs-button',
-  standalone: true,
-  imports: [IconComponent, LaddaModule],
   templateUrl: 'button.component.html',
   styleUrls: ['button.component.scss'],
+  imports: [IconComponent, LaddaModule]
 })
 export class ButtonComponent {
   @Input()
-  @HostBinding('class')
-  color: string = 'primary';
+  @HostBinding()
+  color: 'primary' | 'secondary' | 'tertiary' = 'primary';
 
   @Input() iconName: string;
-  @Input() iconColor: 'alt' | 'default' | 'accent' | 'white';
+  @Input() iconColor: 'yellow' | 'default' | 'red' | 'white';
   @Input() iconOnly: boolean;
   @Input() iconSize: number;
   @Input() iconVariant: number;

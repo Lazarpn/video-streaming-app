@@ -1,0 +1,51 @@
+:host {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 750px;
+  height: 100%;
+  padding: 24px 0;
+  box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.1);
+  gap: 40px;
+}
+
+h3 {
+  margin: 0;
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 670px;
+}
+
+vs-button {
+  width: 30%;
+}
+
+span {
+  color: var(--black);
+  align-self: center;
+}
+
+.redirect-button {
+  text-decoration: underline;
+}
+
+.button-close {
+  position: absolute;
+  top: 5%;
+  right: 5%;
+}
+
+vs-button.google-login::ng-deep button {
+  border: 1px solid var(--black);
+  border-radius: 4px;
+  background-image: url("/assets/icons/socials/google-logo.svg");
+  background-color: white;
+  background-position: 24px;
+  background-repeat: no-repeat;
+}

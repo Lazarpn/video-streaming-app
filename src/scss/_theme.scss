@@ -1,10 +1,52 @@
 body {
   --white: #ffffff;
   --black: #000000;
-  --accent: #bbfe00;
-  --accent-20: #c7f841;
-  --alt: #5ca1ac;
-  --purple: #764ebe;
-  --purple-20: #8367b8;
-  --dark-blue: #002436;
+  --accent: #ff5a6b;
+  --accent-20: #ff7b89;
+  --accent-40: #ffa1ae;
+  --very-light-red: #ffe7e9;
+  --gray: #f2f2f2;
+  --gray-text: #a9a9a9;
+  --dark-gray: #838383;
+  --box-shadow-color: #0c0c0c;
+  --info-checkbox-color: #177bef;
+  --info-checkbox-border: #9cb6e6;
+  --info-checkbox-background: #bdd5f7;
+  --default: #292518;
+  --default-20: #6b6952;
+  --default-40: #9c9a87;
+  --default-60: #bbb9a7;
+  --default-80: #c9c8bd;
+  --alt: #d1bc7b;
+  --alt-20: #dac295;
+  --alt-40: #e3d7b0;
+  --alt-60: #ece4ca;
+  --alt-80: #f6f1e4;
+  --warning: #ff0000;
+  --negative: #f64154;
+  --negative-20: #f86776;
+  --negative-40: #fa8d98;
+  --negative-60: #fbb3bb;
+  --negative-80: #fdd9dd;
+  --negative-90: #ffecee;
+  --grayscale: var(--white);
+  --grayscale-dark: #232630;
+  --grayscale-g1: #f6f7f8;
+  --grayscale-g2: #eceff1;
+  --grayscale-g3: #e3e6ea;
+  --grayscale-g4: #d9dee3;
+  --positive-rgb: 90, 230, 145;
+  --positive: #5ae691;
+  --positive-20: #7beba7;
+  --positive-40: #9cf0bd;
+  --positive-60: #bdf5d3;
+  --positive-80: #defae9;
+  --positive-60-dark: #356751;
+  --positive-d1: #30de76;
+  --positive-d2: #1ebf5e;
+
+  // BOX SHADOWS
+  --card-shadow: 0 0 1px 3px var(--gray);
+  --card-hovered-shadow: 0 0 1px 3px var(--accent-40);
+  --chat-shadow: rgba(17, 17, 26, 0.05) 0 4px 16px, rgba(17, 17, 26, 0.05) 0 8px 32px;
 }
