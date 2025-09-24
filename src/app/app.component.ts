@@ -2,12 +2,11 @@ import { Component, NgZone, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
-import { FooterComponent } from './footer/footer.component';
 import { SpinnerComponent } from './shared/components/spinner/spinner.component';
 
 @Component({
   selector: 'vs-root',
-  imports: [RouterOutlet, FooterComponent, SpinnerComponent],
+  imports: [RouterOutlet, SpinnerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
