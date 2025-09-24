@@ -1,4 +1,5 @@
 :host {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -21,4 +22,11 @@
   width: 800px;
   margin-top: 30px;
   gap: 30px;
+}
+
+.sign-out-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 200px;
 }

@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
   displayedColumns: string[] = ['id', 'type'];
   dataSource = [];
 
-  constructor(private router: Router, private accountService: AccountService, private streamService: StreamService) {
+  constructor(private router: Router, public accountService: AccountService, private streamService: StreamService) {
 
   }
 
