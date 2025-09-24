@@ -28,7 +28,9 @@ export class StreamComponent implements OnInit, OnDestroy, AfterViewInit {
 
   streamPassword: string = '';
 
-  pc: RTCPeerConnection;
+  // ✅ One peer connection per viewer
+  private pcs: Map<string, RTCPeerConnection> = new Map();
+
   localStream: MediaStream;
   remoteStream = new MediaStream();
 
@@ -56,22 +58,31 @@ export class StreamComponent implements OnInit, OnDestroy, AfterViewInit {
     this.streamControls = this.streamService.streamControls;
 
     this.signalRService.userJoinedTheStream.subscribe(async userId => {
-      const offer = await this.pc.createOffer();
-      await this.pc.setLocalDescription(offer);
+      if (this.isBroadcaster) {
+        const pc = this.createPeerConnection(userId);
+        const offer = await pc.createOffer();
+        await pc.setLocalDescription(offer);
 
-      const signal: PeerSignal = {
-        fromId: this.currentUserId,
-        toId: userId,
-        message: { type: 'offer', sdp: { type: 'offer', sdp: offer.sdp ?? '' } }
-      };
+        const signal: PeerSignal = {
+          fromId: this.currentUserId,
+          toId: userId,
+          message: { type: 'offer', sdp: { type: 'offer', sdp: offer.sdp ?? '' } }
+        };
 
-      this.streamService.createOffer(this.streamId, signal).subscribe({
-        next: () => { },
-        error: async (errors: ExceptionDetail[]) => await this.handleErrors(errors)
-      });
+        this.streamService.createOffer(this.streamId, signal).subscribe({
+          next: () => { },
+          error: async (errors: ExceptionDetail[]) => await this.handleErrors(errors)
+        });
+      }
     });
 
     this.signalRService.userLeftTheStream.subscribe(userId => {
+      const pc = this.pcs.get(userId);
+      if (pc) {
+        pc.close();
+        this.pcs.delete(userId);
+      }
+
       if (userId === this.streamBasicInfo.userOwnerId) {
         this.router.navigate(['/home']);
       }
@@ -88,6 +99,49 @@ export class StreamComponent implements OnInit, OnDestroy, AfterViewInit {
       this.leaveStreamBeforeUnload();
       this.joinStream();
     });
+
+    this.signalRService.broadcasterCreatedOffer.subscribe(async (model: PeerSignal) => {
+      if (!this.isBroadcaster) {
+        const pc = this.createPeerConnection(model.fromId); // broadcaster
+        await pc.setRemoteDescription({ type: model.message.sdp.type, sdp: model.message.sdp.sdp });
+        const answer = await pc.createAnswer();
+        await pc.setLocalDescription(answer);
+
+        const signal: PeerSignal = {
+          fromId: this.currentUserId,
+          toId: this.streamBasicInfo.userOwnerId,
+          message: { type: 'answer', sdp: { type: 'answer', sdp: answer.sdp ?? '' } }
+        };
+
+        this.streamService.respondToOffer(this.streamId, signal).subscribe({
+          next: () => { },
+          error: async (errors: ExceptionDetail[]) => await this.handleErrors(errors)
+        });
+      }
+    });
+
+    this.signalRService.viewerRespondedToAnOffer.subscribe(async (model: PeerSignal) => {
+      if (this.isBroadcaster) {
+        const pc = this.pcs.get(model.fromId);
+        if (pc && pc.signalingState === 'have-local-offer') {
+          console.log('[Broadcaster] Applying viewer answer from', model.fromId);
+          await pc.setRemoteDescription(model.message.sdp);
+        } else {
+          console.warn('[Broadcaster] Ignoring unexpected answer, state =', pc?.signalingState);
+        }
+      }
+    });
+
+    this.signalRService.iceCandidateReceived.subscribe(async (model: PeerSignal) => {
+      const pc = this.pcs.get(model.fromId);
+      if (pc) {
+        try {
+          await pc.addIceCandidate(model.message.candidate);
+        } catch {
+          console.error('Error adding received ICE candidate');
+        }
+      }
+    });
   }
 
   async ngAfterViewInit() {
@@ -97,18 +151,16 @@ export class StreamComponent implements OnInit, OnDestroy, AfterViewInit {
       this.onControlsChange(this.streamControls);
 
       this.videoPlayer.nativeElement.srcObject = this.localStream;
-
-      this.setupPeerConnection();
     } else {
-      this.setupPeerConnection();
       this.videoPlayer.nativeElement.srcObject = this.remoteStream;
     }
   }
 
   ngOnDestroy(): void {
     this.leaveStream();
-    this.pc?.close();
+    this.pcs.forEach(pc => pc.close());
     this.localStream?.getTracks().forEach(track => track.stop());
+    this.pcs.clear();
   }
 
   endStream() {
@@ -129,25 +181,26 @@ export class StreamComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  private setupPeerConnection() {
-    this.pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+  private createPeerConnection(userId: string): RTCPeerConnection {
+    let pc = this.pcs.get(userId);
+    if (pc) return pc;
+
+    pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
 
     if (this.localStream) {
-      this.localStream.getTracks().forEach(track => this.pc.addTrack(track, this.localStream));
+      this.localStream.getTracks().forEach(track => pc.addTrack(track, this.localStream));
     }
 
-    this.pc.ontrack = (event) => {
+    pc.ontrack = (event) => {
       event.streams[0].getTracks().forEach(track => this.remoteStream.addTrack(track));
       this.videoPlayer.nativeElement.play().catch(e => console.warn('Autoplay blocked', e));
     };
 
-    this.pc.onicecandidate = (event) => {
+    pc.onicecandidate = (event) => {
       if (event.candidate) {
         const signal: PeerSignal = {
           fromId: this.currentUserId,
-          toId: this.isBroadcaster
-            ? this.currentUserId! // backend ignores this and fans out to all viewers
-            : this.streamBasicInfo.userOwnerId, // send directly to broadcaster
+          toId: userId,
           message: {
             type: 'ice',
             candidate: {
@@ -166,51 +219,17 @@ export class StreamComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     };
 
-    this.signalRService.broadcasterCreatedOffer.subscribe(async (model: PeerSignal) => {
-      await this.pc.setRemoteDescription({ type: model.message.sdp.type, sdp: model.message.sdp.sdp });
-      const answer = await this.pc.createAnswer();
-      await this.pc.setLocalDescription(answer);
-
-      const signal: PeerSignal = {
-        fromId: this.currentUserId,
-        toId: this.streamBasicInfo.userOwnerId,
-        message: { type: 'answer', sdp: { type: 'answer', sdp: answer.sdp ?? '' } }
-      };
-
-      this.streamService.respondToOffer(this.streamId, signal).subscribe({
-        next: () => { },
-        error: async (errors: ExceptionDetail[]) => await this.handleErrors(errors)
-      });
-    });
-
-    this.signalRService.viewerRespondedToAnOffer.subscribe(async (model: PeerSignal) => {
-      if (this.isBroadcaster) {
-        if (this.pc.signalingState === 'have-local-offer') {
-          console.log('[Broadcaster] Applying viewer answer...');
-          await this.pc.setRemoteDescription(model.message.sdp);
-        } else {
-          console.warn('[Broadcaster] Ignoring unexpected answer, state =', this.pc.signalingState);
-        }
-      }
-    });
-
-    this.signalRService.iceCandidateReceived.subscribe(async (model: PeerSignal) => {
-      try {
-        await this.pc.addIceCandidate(model.message.candidate);
-      } catch {
-        console.error('Error adding received ICE candidate');
-      }
-    });
+    this.pcs.set(userId, pc);
+    return pc;
   }
 
   private leaveStreamBeforeUnload() {
     window.addEventListener('beforeunload', _ => {
-      const token = localStorage.getItem(LS_USER_TOKEN); // or however your app stores it
+      const token = localStorage.getItem(LS_USER_TOKEN);
 
-      const data = {};
       fetch(`${environment.apiUrl}/meets/${this.streamId}/leave`, {
         method: 'POST',
-        body: JSON.stringify(data),
+        body: JSON.stringify({}),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
