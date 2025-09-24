@@ -39,7 +39,7 @@ export class NewMeetComponent {
 
     this.streamService.createStream(model).subscribe({
       next: streamModel => {
-        this.router.navigate([`/stream/${streamModel.id}`]);
+        this.router.navigate([`/stream/join/${streamModel.id}`]);
       },
       error: async (errors: ExceptionDetail[]) => await this.handleErrors(errors)
     });

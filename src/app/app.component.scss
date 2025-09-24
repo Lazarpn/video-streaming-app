@@ -10,27 +10,19 @@
   align-items: center;
   height: 100dvh;
   overflow-x: hidden;
-  padding: 0 100px;
 
   @include mixins.scrollbar;
-
-  @media #{variables.$s-desktop} {
-    padding: 0 80px;
-  }
-
-  @media #{variables.$tablet} {
-    padding: 0 60px;
-  }
-
-  @media #{variables.$s-tablet} {
-    padding: 0 40px;
-  }
 
   @media #{variables.$phone} {
     vs-header {
       display: none;
     }
   }
+}
+
+main {
+  width: 100%;
+  height: 100%;
 }
 
 .loading-overlay {

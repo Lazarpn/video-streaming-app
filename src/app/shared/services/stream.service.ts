@@ -1,13 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { PeerSignal, StreamCreateModel, StreamModel, StreamTypeModel, StreamUnlockModel } from '../models/stream';
+import { StreamControlsStatus } from '../../stream/stream-controls/stream-controls.component';
+import { PeerSignal, StreamCreateModel, StreamMember, StreamModel, StreamTypeModel, StreamUnlockModel } from '../models/stream';
 
 @Injectable({ providedIn: 'root' })
 export class StreamService {
+  streamMembers: StreamMember[] = [];
+  streamControls: StreamControlsStatus;
+  streamPassword: string = '';
+
   private readonly API_ENDPOINT = `${environment.apiUrl}/meets`;
 
   constructor(private http: HttpClient) { }
@@ -20,13 +25,16 @@ export class StreamService {
     return this.http.post<void>(`${this.API_ENDPOINT}/${streamId}/ice`, signal);
   }
 
+  joinStream(id: string, makeMember: boolean = true): Observable<void> {
+    return this.http.post<void>(`${this.API_ENDPOINT}/${id}/join`, { makeMember: makeMember, password: this.streamPassword });
+  }
 
-  joinStream(id: string): Observable<void> {
-    return this.http.post<void>(`${this.API_ENDPOINT}/${id}/join`, {});
+  getMeetMember(id: string): Observable<StreamMember> {
+    return this.http.get<StreamMember>(`${this.API_ENDPOINT}/${id}/member`);
   }
 
   leaveStream(id: string): Observable<void> {
-    return this.http.post<void>(`${this.API_ENDPOINT}/${id}/leave`, {});
+    return this.http.post<void>(`${this.API_ENDPOINT}/${id}/leave`, {}).pipe(tap(() => this.streamMembers = []));
   }
 
   getStreamType(id: string): Observable<StreamTypeModel> {

@@ -15,7 +15,7 @@ export class ButtonComponent {
   color: 'primary' | 'secondary' | 'tertiary' = 'primary';
 
   @Input() iconName: string;
-  @Input() iconColor: 'yellow' | 'default' | 'red' | 'white';
+  @Input() iconColor: 'accent' | 'alt' | 'contrast' | 'white';
   @Input() iconOnly: boolean;
   @Input() iconSize: number;
   @Input() iconVariant: number;

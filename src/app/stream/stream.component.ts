@@ -1,10 +1,8 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { environment } from '../../environments/environment';
-import { ButtonComponent } from '../shared/button/button.component';
-import { InputComponent } from '../shared/components/input/input.component';
 import { LS_USER_TOKEN } from '../shared/constants';
 import { StreamType } from '../shared/enums/stream-type.enum';
 import { ExceptionDetail } from '../shared/exception-detail';
@@ -13,12 +11,13 @@ import { AccountService } from '../shared/services/account.service';
 import { NotificationService } from '../shared/services/notification.service';
 import { SignalRService } from '../shared/services/signalr.service';
 import { StreamService } from '../shared/services/stream.service';
+import { StreamControlsComponent, StreamControlsStatus } from './stream-controls/stream-controls.component';
 
 @Component({
   selector: 'vs-stream',
   templateUrl: './stream.component.html',
   styleUrl: './stream.component.scss',
-  imports: [InputComponent, ButtonComponent, FormsModule]
+  imports: [FormsModule, StreamControlsComponent]
 })
 export class StreamComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('videoPlayer') videoPlayer: ElementRef<HTMLVideoElement>;
@@ -27,12 +26,13 @@ export class StreamComponent implements OnInit, OnDestroy, AfterViewInit {
   streamId: string;
   StreamTypeEnum = StreamType;
 
-  isUnlocked: boolean = false;
   streamPassword: string = '';
 
   pc: RTCPeerConnection;
   localStream: MediaStream;
   remoteStream = new MediaStream();
+
+  streamControls: StreamControlsStatus = { camera: true, microphone: true };
 
   get currentUserId() {
     return this.accountService.user?.id;
@@ -44,94 +44,89 @@ export class StreamComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private accountService: AccountService,
-    private streamService: StreamService,
+    public streamService: StreamService,
     private notification: NotificationService,
     private signalRService: SignalRService
   ) { }
 
   ngOnInit(): void {
     this.signalRService.initialize();
+    this.streamControls = this.streamService.streamControls;
 
     this.signalRService.userJoinedTheStream.subscribe(async userId => {
-      if (this.isBroadcaster) {
-        const offer = await this.pc.createOffer();
-        await this.pc.setLocalDescription(offer);
+      const offer = await this.pc.createOffer();
+      await this.pc.setLocalDescription(offer);
 
-        const signal: PeerSignal = {
-          fromId: this.currentUserId!,
-          toId: userId,  // must be viewer’s Guid
-          message: { type: 'offer', sdp: { type: 'offer', sdp: offer.sdp ?? '' } }
-        };
+      const signal: PeerSignal = {
+        fromId: this.currentUserId,
+        toId: userId,
+        message: { type: 'offer', sdp: { type: 'offer', sdp: offer.sdp ?? '' } }
+      };
 
-        this.streamService.createOffer(this.streamId, signal).subscribe();
-      }
+      this.streamService.createOffer(this.streamId, signal).subscribe({
+        next: () => { },
+        error: async (errors: ExceptionDetail[]) => await this.handleErrors(errors)
+      });
     });
 
     this.signalRService.userLeftTheStream.subscribe(userId => {
-      console.log('User left the stream: ', userId);
+      if (userId === this.streamBasicInfo.userOwnerId) {
+        this.router.navigate(['/home']);
+      }
     });
 
     this.route.data.subscribe(data => {
       this.streamBasicInfo = data.streamType;
-      this.isUnlocked = this.streamBasicInfo.type === StreamType.Public || this.isBroadcaster;
     });
 
     this.route.params.subscribe(params => {
       const streamId = params['streamId'];
       this.streamId = streamId;
 
-      window.addEventListener('beforeunload', _ => {
-        const token = localStorage.getItem(LS_USER_TOKEN); // or however your app stores it
-
-        const data = {};
-        fetch(`${environment.apiUrl}/meets/${this.streamId}/leave`, {
-          method: 'POST',
-          body: JSON.stringify(data),
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          keepalive: true
-        });
-      });
-
-      if (this.isUnlocked) {
-        this.streamService.joinStream(this.streamId).subscribe({
-          next: () => { },
-          error: async (errors: ExceptionDetail[]) => await this.handleErrors(errors)
-        });
-      }
+      this.leaveStreamBeforeUnload();
+      this.joinStream();
     });
   }
 
   async ngAfterViewInit() {
     if (this.isBroadcaster) {
-      // broadcaster
       this.localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+
+      this.onControlsChange(this.streamControls);
+
       this.videoPlayer.nativeElement.srcObject = this.localStream;
 
       this.setupPeerConnection();
     } else {
-      // viewer
       this.setupPeerConnection();
       this.videoPlayer.nativeElement.srcObject = this.remoteStream;
     }
   }
 
   ngOnDestroy(): void {
-    this.streamService.leaveStream(this.streamId).subscribe({
-      next: () => { },
-      error: async (errors: ExceptionDetail[]) => await this.handleErrors(errors)
-    });
-
+    this.leaveStream();
     this.pc?.close();
     this.localStream?.getTracks().forEach(track => track.stop());
+  }
 
-    this.streamService.leaveStream(this.streamId).subscribe({
-      next: () => { },
-      error: async (errors: ExceptionDetail[]) => await this.handleErrors(errors)
-    });
+  endStream() {
+    this.leaveStream();
+  }
+
+  onControlsChange(controls: StreamControlsStatus) {
+    this.streamControls = controls;
+
+    if (this.localStream) {
+      this.localStream.getVideoTracks().forEach(track => {
+        track.enabled = controls.camera;
+      });
+
+      this.localStream.getAudioTracks().forEach(track => {
+        track.enabled = controls.microphone;
+      });
+    }
   }
 
   private setupPeerConnection() {
@@ -143,15 +138,16 @@ export class StreamComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.pc.ontrack = (event) => {
       event.streams[0].getTracks().forEach(track => this.remoteStream.addTrack(track));
+      this.videoPlayer.nativeElement.play().catch(e => console.warn('Autoplay blocked', e));
     };
 
     this.pc.onicecandidate = (event) => {
       if (event.candidate) {
         const signal: PeerSignal = {
-          fromId: this.currentUserId!,   // must be Guid
+          fromId: this.currentUserId,
           toId: this.isBroadcaster
-            ? this.accountService.user.id // actual viewer Guid
-            : this.streamBasicInfo.userOwnerId,
+            ? this.currentUserId! // backend ignores this and fans out to all viewers
+            : this.streamBasicInfo.userOwnerId, // send directly to broadcaster
           message: {
             type: 'ice',
             candidate: {
@@ -163,18 +159,21 @@ export class StreamComponent implements OnInit, OnDestroy, AfterViewInit {
           }
         };
 
-        this.streamService.sendIceCandidate(this.streamId, signal).subscribe();
+        this.streamService.sendIceCandidate(this.streamId, signal).subscribe({
+          next: () => { },
+          error: async (errors: ExceptionDetail[]) => await this.handleErrors(errors)
+        });
       }
     };
 
     this.signalRService.broadcasterCreatedOffer.subscribe(async (model: PeerSignal) => {
-      await this.pc.setRemoteDescription({ type: model.message.sdp!.type, sdp: model.message.sdp!.sdp });
+      await this.pc.setRemoteDescription({ type: model.message.sdp.type, sdp: model.message.sdp.sdp });
       const answer = await this.pc.createAnswer();
       await this.pc.setLocalDescription(answer);
 
       const signal: PeerSignal = {
-        fromId: this.currentUserId!,
-        toId: model.fromId,
+        fromId: this.currentUserId,
+        toId: this.streamBasicInfo.userOwnerId,
         message: { type: 'answer', sdp: { type: 'answer', sdp: answer.sdp ?? '' } }
       };
 
@@ -185,10 +184,14 @@ export class StreamComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.signalRService.viewerRespondedToAnOffer.subscribe(async (model: PeerSignal) => {
-      await this.pc.setRemoteDescription({
-        type: model.message.sdp!.type,
-        sdp: model.message.sdp!.sdp
-      });
+      if (this.isBroadcaster) {
+        if (this.pc.signalingState === 'have-local-offer') {
+          console.log('[Broadcaster] Applying viewer answer...');
+          await this.pc.setRemoteDescription(model.message.sdp);
+        } else {
+          console.warn('[Broadcaster] Ignoring unexpected answer, state =', this.pc.signalingState);
+        }
+      }
     });
 
     this.signalRService.iceCandidateReceived.subscribe(async (model: PeerSignal) => {
@@ -200,17 +203,33 @@ export class StreamComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  unlockStream() {
-    const model = { password: this.streamPassword };
-    this.streamService.unlockStream(this.streamId, model).subscribe({
-      next: () => {
-        this.isUnlocked = true;
+  private leaveStreamBeforeUnload() {
+    window.addEventListener('beforeunload', _ => {
+      const token = localStorage.getItem(LS_USER_TOKEN); // or however your app stores it
 
-        this.streamService.joinStream(this.streamId).subscribe({
-          next: () => { },
-          error: async (errors: ExceptionDetail[]) => await this.handleErrors(errors)
-        });
-      },
+      const data = {};
+      fetch(`${environment.apiUrl}/meets/${this.streamId}/leave`, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        keepalive: true
+      });
+    });
+  }
+
+  private leaveStream() {
+    this.streamService.leaveStream(this.streamId).subscribe({
+      next: () => this.router.navigate(['/home']),
+      error: async (errors: ExceptionDetail[]) => await this.handleErrors(errors)
+    });
+  }
+
+  private joinStream() {
+    this.streamService.joinStream(this.streamId, false).subscribe({
+      next: () => { },
       error: async (errors: ExceptionDetail[]) => await this.handleErrors(errors)
     });
   }

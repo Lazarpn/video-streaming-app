@@ -5,6 +5,12 @@ export interface StreamTypeModel {
   userOwnerId: string;
 }
 
+export interface StreamMember {
+  id: string;
+  userId: string;
+  meetId: string;
+}
+
 export interface StreamModel {
   id: string;
   type: StreamType;

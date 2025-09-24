@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProjectComponent } from './project.component';
+import { StreamControlsComponent } from './stream-controls.component';
 
-describe('ProjectComponent', () => {
-  let component: ProjectComponent;
-  let fixture: ComponentFixture<ProjectComponent>;
+describe('StreamControlsComponent', () => {
+  let component: StreamControlsComponent;
+  let fixture: ComponentFixture<StreamControlsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProjectComponent]
+      imports: [StreamControlsComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ProjectComponent);
+    fixture = TestBed.createComponent(StreamControlsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,73 @@
+@if (!isBeforeStreamJoin) {
+  <div class="wrapper">
+    {{ userInitials }}
+  </div>
+}
+
+<div class="wrapper">
+  @if (streamControls.camera) {
+    <vs-button
+      color="secondary"
+      iconName="video"
+      iconColor="alt"
+      [iconVariant]="20"
+      [iconSize]="24"
+      [iconOnly]="true"
+      (buttonClick)="toggleCamera()">
+    </vs-button> }
+  @else {
+    <vs-button
+      color="secondary"
+      iconName="video_off"
+      iconColor="accent"
+      [iconVariant]="20"
+      [iconSize]="24"
+      [iconOnly]="true"
+      (buttonClick)="toggleCamera()">
+    </vs-button>
+  }
+
+  @if (streamControls.microphone) {
+    <vs-button
+      color="secondary"
+      iconName="mic"
+      iconColor="alt"
+      [iconVariant]="20"
+      [iconSize]="24"
+      [iconOnly]="true"
+      (buttonClick)="toggleMicrophone()">
+    </vs-button>
+  }
+  @else {
+    <vs-button
+      color="secondary"
+      iconName="mic_off"
+      iconColor="accent"
+      [iconVariant]="20"
+      [iconSize]="24"
+      [iconOnly]="true"
+      (buttonClick)="toggleMicrophone()">
+    </vs-button>
+  }
+
+  @if (!isBeforeStreamJoin) {
+    <vs-button
+      color="secondary"
+      iconName="call_end"
+      iconColor="accent"
+      [iconVariant]="20"
+      [iconSize]="24"
+      [iconOnly]="true"
+      (buttonClick)="endStream.emit()">
+    </vs-button>
+  }
+</div>
+
+@if (!isBeforeStreamJoin) {
+  <div class="wrapper">
+    <span>{{currentTime}}</span>
+    <span>|</span>
+    <span>{{streamId}}</span>
+  </div>
+
+}

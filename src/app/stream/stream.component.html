@@ -1,30 +1,10 @@
-@if (!isBroadcaster) {
-  @if (!isUnlocked) {
-    <vs-input
-      label="streamPassword"
-      placeholder="enterStreamPassword"
-      name="streamPassword"
-      [required]="true"
-      [noMargin]="true"
-      [maxlength]="20"
-      [pattern]="'^[a-zA-Z0-9-]+$'"
-      [(ngModel)]="streamPassword">
-    </vs-input>
+<video #videoPlayer autoplay playsinline></video>
 
-    <vs-button
-      color="primary"
-      [disabled]="!streamPassword"
-      (click)="unlockStream()">
-      <span>Unlock stream</span>
-    </vs-button>
-  } @else {
-    You're watching the stream!
-
-    <video #videoPlayer autoplay playsinline></video>
-  }
-
-} @else {
-  You're hosting the stream!
-
-  <video #videoPlayer autoplay playsinline></video>
+@if (isBroadcaster) {
+  <vs-stream-controls
+    [streamControls]="streamService.streamControls"
+    [streamId]="streamId"
+    (endStream)="endStream()"
+    (controlsChange)="onControlsChange($event)">
+  </vs-stream-controls>
 }

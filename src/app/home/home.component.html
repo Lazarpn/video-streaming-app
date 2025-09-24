@@ -1,10 +1,27 @@
 <h2>Welcome, start the streaming experience!</h2>
 
+<div class="table-wrapper">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> Id </th>
+      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef> Type </th>
+      <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClicked(row)"></tr>
+  </table>
+</div>
+
 <div class="actions-wrapper">
   <vs-button
     color="primary"
     iconName="video"
-    iconColor="yellow"
+    iconColor="accent"
     [iconVariant]="24"
     routerLink="/new-meeting">
     <span>New meeting</span>
@@ -16,14 +33,13 @@
     name="meetingCode"
     [required]="true"
     [noMargin]="true"
-    [maxlength]="20"
-    [pattern]="'^[a-zA-Z0-9-]+$'"
     [(ngModel)]="meetingCode">
   </vs-input>
 
   <vs-button
     color="primary"
-    [disabled]="!meetingCode">
+    [disabled]="!meetingCode"
+    (buttonClick)="joinMeeting()">
     <span>Join</span>
   </vs-button>
 </div>

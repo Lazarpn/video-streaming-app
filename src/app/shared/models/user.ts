@@ -1,3 +1,5 @@
+import { StreamModel } from './stream';
+
 export interface AuthResponseModel {
   token: string;
 }
@@ -7,6 +9,7 @@ export interface UserMeModel extends UserInitialsModel {
   email: string;
   emailConfirmed: boolean;
   createdAt: string;
+  streams: StreamModel[];
 }
 
 export interface UserInitialsModel {

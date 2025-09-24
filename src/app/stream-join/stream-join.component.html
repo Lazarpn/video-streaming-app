@@ -1,0 +1,33 @@
+<h3>Welcome to the stream</h3>
+
+@if (!isBroadcaster) {
+  @if (!isUnlocked) {
+    <vs-input
+      label="password"
+      placeholder="password"
+      name="password"
+      [required]="true"
+      [noMargin]="true"
+      [maxlength]="20"
+      [pattern]="'^[a-zA-Z0-9-]+$'"
+      [(ngModel)]="streamService.streamPassword">
+    </vs-input>
+  }
+}
+
+@if (isBroadcaster) {
+  <div class="wrapper">
+    <vs-stream-controls
+      [isBeforeStreamJoin]="true"
+      [streamId]="streamId"
+      (controlsChange)="onControlsChange($event)">
+    </vs-stream-controls>
+  </div>
+}
+
+<vs-button
+  color="primary"
+  [disabled]="!streamService.streamPassword && !isUnlocked"
+  (click)="joinStream()">
+  <span>Join</span>
+</vs-button>

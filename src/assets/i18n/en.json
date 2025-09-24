@@ -112,9 +112,11 @@
     "editing": "Editing",
     "chats": "Chats",
     "edited": "Edited",
-    "meetingCode": "Meeting code"
+    "meetingCode": "Meeting code",
+    "password": "Password"
   },
   "errors": {
+    "WrongPassword": "Wrong password.",
     "RequestInvalid": "",
     "Unauthorized": "",
     "RequirementsNotMet": "",
@@ -206,6 +208,7 @@
     "firstName": "First name",
     "lastName": "Last name",
     "confirmPassword": "Confirm password",
+    "password": "Password",
     "groupName": "Group name",
     "yourExperience": "Your experience",
     "Sort by": "Sort by",

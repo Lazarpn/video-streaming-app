@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 
 import { AuthenticatedGuard } from './shared/guards/authenticated.guard';
 import { UnauthenticatedGuard } from './shared/guards/unauthenticated.guard';
+import { MeetMemberResolver } from './shared/resolvers/meet-member.resolver';
 import { StreamTypeResolver } from './shared/resolvers/stream-type.resolver';
 
 export const routes: Routes = [
@@ -29,6 +30,12 @@ export const routes: Routes = [
   {
     path: 'stream/:streamId',
     loadComponent: () => import('./stream/stream.component').then(c => c.StreamComponent),
+    resolve: { streamType: StreamTypeResolver, meetMember: MeetMemberResolver },
+    canActivate: [AuthenticatedGuard]
+  },
+  {
+    path: 'stream/join/:streamId',
+    loadComponent: () => import('./stream-join/stream-join.component').then(c => c.StreamJoinComponent),
     resolve: { streamType: StreamTypeResolver },
     canActivate: [AuthenticatedGuard]
   },
